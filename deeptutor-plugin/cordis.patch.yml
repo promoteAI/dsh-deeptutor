@@ -1,0 +1,41 @@
+- insert:
+    - id: deeptutor
+      name: '@local/deeptutor'
+      config:
+        sandboxUrl: http://127.0.0.1:3782
+    - id: preset-study
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: study
+        name: 学习模式
+        description: 纯 JS 学习模式：讲解/出题/错题本/知识库（无 Python 依赖）
+        order: 5
+        plugins:
+        - id: persona
+          name: '@deepseek-ai/dsh-persona'
+          config:
+            prefix: You are a personalized learning assistant powered by the {{model}} model.
+            suffix: |
+              当前处于「学习模式」。学习类请求优先使用 study_* 工具完成。
+
+              study_teach 用于讲解；study_quiz 用于确认出题参数后生成题目；
+              study_review 用于读取最近一次判分结果；study_kb 用于知识库操作。
+
+              铁律：
+              - 出题后用户必须通过 `deeptutor-quiz` 围栏作答，判分经 /api/study/grade 完成
+              - 错题自动写入工作区 .study/wrong-answers.json，间隔复习规则由服务端执行
+              - 不要用 deeptutor_run 或任何 CLI 调用（本插件已不依赖 DeepTutor）
+              - deeptutor-dashboard 围栏只展示真实结果，不编造掌握度或错题
+
+              DSH 的其余工具（文件、搜索、web）照常可用。
+        - id: tool-todo
+        - id: tool-web
+          config:
+            fetch: true
+            searchTimeoutMs: 60000
+        - id: present
+        - id: tool-ask-user
+        - id: tool-fs
+        - id: tool-fs-search
+        - id: deeptutor
+          name: '@local/deeptutor'
