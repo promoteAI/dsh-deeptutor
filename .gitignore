@@ -1,0 +1,10 @@
+# DeepTutor runtime data (chat history, settings, workspaces) — never commit
+data/
+
+# Node / build
+node_modules/
+
+# Local editor / OS noise
+*.log
+.DS_Store
+Thumbs.db
